@@ -3,6 +3,7 @@ import { Sales } from "../components/Sales"
 import { Products } from "../components/Products"
 import { Customers } from "../components/Customers"
 import { Employees } from "../components/Employees"
+import { Transactions } from "../components/Transactions";
 
 const navigationItems = [
   {
@@ -67,7 +68,7 @@ const navigationItems = [
       </svg>
     ),
     path: "/transactions",
-    component: (<Test />),
+    component: (<Transactions />),
   },
   {
     title: "Products",
@@ -155,4 +156,511 @@ const navigationItems = [
   },
 ];
 
-export { navigationItems };
+const mockProducts = [
+  {
+    product_name: "Red Fish",
+    product_type: "Fish",
+    product_category: "Frozen Food",
+    cost_price: 400,
+    weight: 2,
+    quantity: 1
+  },
+  {
+    product_name: "Chicken Wings",
+    product_type: "Poultry",
+    product_category: "Frozen Food",
+    cost_price: 300,
+    weight: 1.5,
+    quantity: 2
+  },
+  {
+    product_name: "Broccoli",
+    product_type: "Vegetable",
+    product_category: "Fresh Produce",
+    cost_price: 150,
+    weight: 1,
+    quantity: 3
+  },
+  {
+    product_name: "Vanilla Ice Cream",
+    product_type: "Dairy",
+    product_category: "Frozen Dessert",
+    cost_price: 200,
+    weight: 0.5,
+    quantity: 4
+  },
+  {
+    product_name: "Ground Beef",
+    product_type: "Meat",
+    product_category: "Fresh Food",
+    cost_price: 500,
+    weight: 2.5,
+    quantity: 2
+  },
+  {
+    product_name: "Orange Juice",
+    product_type: "Beverage",
+    product_category: "Beverages",
+    cost_price: 100,
+    weight: 1,
+    quantity: 5
+  },
+  {
+    product_name: "Cheddar Cheese",
+    product_type: "Dairy",
+    product_category: "Cheese",
+    cost_price: 250,
+    weight: 0.3,
+    quantity: 2
+  },
+  {
+    product_name: "Sliced Bread",
+    product_type: "Bakery",
+    product_category: "Bread",
+    cost_price: 120,
+    weight: 0.8,
+    quantity: 3
+  },
+  {
+    product_name: "Tomato Sauce",
+    product_type: "Condiment",
+    product_category: "Canned Goods",
+    cost_price: 80,
+    weight: 0.5,
+    quantity: 2
+  },
+  {
+    product_name: "Mixed Nuts",
+    product_type: "Snack",
+    product_category: "Nuts",
+    cost_price: 180,
+    weight: 0.4,
+    quantity: 4
+  }
+];
+
+const mockCustomers = [
+  {
+    customer_name: "Francis Baidoo",
+    location: "Accra",
+    phone_number: "0502393992",
+  },
+  {
+    customer_name: "Alice Johnson",
+    location: "New York",
+    phone_number: "555-1234",
+  },
+  {
+    customer_name: "Carlos Rodriguez",
+    location: "Mexico City",
+    phone_number: "+52 55 5555 5555",
+  },
+  {
+    customer_name: "Sara Kim",
+    location: "Seoul",
+    phone_number: "+82 10 1234 5678",
+  },
+  {
+    customer_name: "Mohammed Al-Farsi",
+    location: "Dubai",
+    phone_number: "+971 50 123 4567",
+  },
+  {
+    customer_name: "Elena Rossi",
+    location: "Rome",
+    phone_number: "+39 333 4567890",
+  },
+];
+
+const mockEmployees = [
+  {
+    employee_name: "Ebenezer Darkwa",
+    phone_number: "023244244",
+    date_of_employment: "2022-04-13",
+    date_of_termination: "2024-04-26",
+    location: "Accra",
+    dob: "1997-03-09",
+    gender: "MALE"
+  },
+  {
+    employee_name: "Anna Smith",
+    phone_number: "555-9876",
+    date_of_employment: "2021-08-20",
+    date_of_termination: null,
+    location: "New York",
+    dob: "1985-12-15",
+    gender: "FEMALE"
+  },
+  {
+    employee_name: "Raj Patel",
+    phone_number: "+91 98765 43210",
+    date_of_employment: "2023-01-05",
+    date_of_termination: null,
+    location: "Mumbai",
+    dob: "1990-06-22",
+    gender: "MALE"
+  },
+  {
+    employee_name: "Maria Gonzalez",
+    phone_number: "+34 666 789123",
+    date_of_employment: "2020-11-10",
+    date_of_termination: "2023-12-15",
+    location: "Madrid",
+    dob: "1988-04-30",
+    gender: "FEMALE"
+  },
+  {
+    employee_name: "Hiroshi Tanaka",
+    phone_number: "+81 90 1234 5678",
+    date_of_employment: "2022-02-28",
+    date_of_termination: null,
+    location: "Tokyo",
+    dob: "1980-09-05",
+    gender: "MALE"
+  },
+];
+
+
+const mockTransactions = [
+  {
+    customer_name: "John Bellions",
+    product_name: "Red Fish",
+    weight: 3,
+    unit_price: 36,
+    total_price: 108,
+    payment_type: "CASH",
+    amount_paid: 200,
+    customer_balance: 82,
+    created_by: "Hiroshi Tanaka",
+    date_of_purchase: "2023-12-12"
+  },
+  {
+    customer_name: "Alice Johnson",
+    product_name: "Chicken Wings",
+    weight: 2,
+    unit_price: 25,
+    total_price: 50,
+    payment_type: "CARD",
+    amount_paid: 50,
+    customer_balance: 0,
+    created_by: "Anna Smith",
+    date_of_purchase: "2023-12-15"
+  },
+  {
+    customer_name: "Carlos Rodriguez",
+    product_name: "Broccoli",
+    weight: 1.5,
+    unit_price: 20,
+    total_price: 30,
+    payment_type: "CASH",
+    amount_paid: 30,
+    customer_balance: 0,
+    created_by: "Raj Patel",
+    date_of_purchase: "2023-12-18"
+  },
+  {
+    customer_name: "Sara Kim",
+    product_name: "Vanilla Ice Cream",
+    weight: 0.5,
+    unit_price: 15,
+    total_price: 7.5,
+    payment_type: "CARD",
+    amount_paid: 10,
+    customer_balance: 2.5,
+    created_by: "Maria Gonzalez",
+    date_of_purchase: "2023-12-20"
+  },
+  {
+    customer_name: "Mohammed Al-Farsi",
+    product_name: "Ground Beef",
+    weight: 2,
+    unit_price: 50,
+    total_price: 100,
+    payment_type: "CASH",
+    amount_paid: 100,
+    customer_balance: 0,
+    created_by: "Hiroshi Tanaka",
+    date_of_purchase: "2023-12-22"
+  },
+  {
+    customer_name: "Elena Rossi",
+    product_name: "Orange Juice",
+    weight: 1,
+    unit_price: 10,
+    total_price: 10,
+    payment_type: "CARD",
+    amount_paid: 10,
+    customer_balance: 0,
+    created_by: "Anna Smith",
+    date_of_purchase: "2023-12-25"
+  },
+  {
+    customer_name: "John Bellions",
+    product_name: "Cheddar Cheese",
+    weight: 0.3,
+    unit_price: 30,
+    total_price: 9,
+    payment_type: "CASH",
+    amount_paid: 15,
+    customer_balance: 6,
+    created_by: "Raj Patel",
+    date_of_purchase: "2023-12-28"
+  },
+  {
+    customer_name: "Alice Johnson",
+    product_name: "Sliced Bread",
+    weight: 0.8,
+    unit_price: 15,
+    total_price: 12,
+    payment_type: "CARD",
+    amount_paid: 12,
+    customer_balance: 0,
+    created_by: "Maria Gonzalez",
+    date_of_purchase: "2023-12-30"
+  },
+  {
+    customer_name: "Carlos Rodriguez",
+    product_name: "Tomato Sauce",
+    weight: 0.5,
+    unit_price: 8,
+    total_price: 4,
+    payment_type: "CASH",
+    amount_paid: 5,
+    customer_balance: 1,
+    created_by: "Hiroshi Tanaka",
+    date_of_purchase: "2024-01-02"
+  },
+  {
+    customer_name: "Sara Kim",
+    product_name: "Mixed Nuts",
+    weight: 0.4,
+    unit_price: 20,
+    total_price: 8,
+    payment_type: "CARD",
+    amount_paid: 8,
+    customer_balance: 0,
+    created_by: "Anna Smith",
+    date_of_purchase: "2024-01-05"
+  },
+  {
+    customer_name: "Mohammed Al-Farsi",
+    product_name: "Red Fish",
+    weight: 2,
+    unit_price: 36,
+    total_price: 72,
+    payment_type: "CASH",
+    amount_paid: 80,
+    customer_balance: 8,
+    created_by: "Raj Patel",
+    date_of_purchase: "2024-01-08"
+  },
+  {
+    customer_name: "Elena Rossi",
+    product_name: "Chicken Wings",
+    weight: 1.5,
+    unit_price: 25,
+    total_price: 37.5,
+    payment_type: "CARD",
+    amount_paid: 40,
+    customer_balance: 2.5,
+    created_by: "Maria Gonzalez",
+    date_of_purchase: "2024-01-10"
+  },
+  {
+    customer_name: "John Bellions",
+    product_name: "Broccoli",
+    weight: 1,
+    unit_price: 20,
+    total_price: 20,
+    payment_type: "CASH",
+    amount_paid: 20,
+    customer_balance: 0,
+    created_by: "Hiroshi Tanaka",
+    date_of_purchase: "2024-01-13"
+  },
+  {
+    customer_name: "Alice Johnson",
+    product_name: "Vanilla Ice Cream",
+    weight: 0.5,
+    unit_price: 15,
+    total_price: 7.5,
+    payment_type: "CARD",
+    amount_paid: 10,
+    customer_balance: 2.5,
+    created_by: "Anna Smith",
+    date_of_purchase: "2024-01-16"
+  },
+  {
+    customer_name: "Carlos Rodriguez",
+    product_name: "Ground Beef",
+    weight: 2.5,
+    unit_price: 50,
+    total_price: 125,
+    payment_type: "CASH",
+    amount_paid: 130,
+    customer_balance: 5,
+    created_by: "Raj Patel",
+    date_of_purchase: "2024-01-19"
+  },
+  {
+    customer_name: "Sara Kim",
+    product_name: "Orange Juice",
+    weight: 1,
+    unit_price: 10,
+    total_price: 10,
+    payment_type: "CARD",
+    amount_paid: 10,
+    customer_balance: 0,
+    created_by: "Maria Gonzalez",
+    date_of_purchase: "2024-01-22"
+  },
+  {
+    customer_name: "Mohammed Al-Farsi",
+    product_name: "Cheddar Cheese",
+    weight: 0.3,
+    unit_price: 30,
+    total_price: 9,
+    payment_type: "CASH",
+    amount_paid: 15,
+    customer_balance: 6,
+    created_by: "Hiroshi Tanaka",
+    date_of_purchase: "2024-01-25"
+  },
+  {
+    customer_name: "Elena Rossi",
+    product_name: "Sliced Bread",
+    weight: 0.8,
+    unit_price: 15,
+    total_price: 12,
+    payment_type: "CARD",
+    amount_paid: 12,
+    customer_balance: 0,
+    created_by: "Anna Smith",
+    date_of_purchase: "2024-01-28"
+  },
+  {
+    customer_name: "John Bellions",
+    product_name: "Tomato Sauce",
+    weight: 0.5,
+    unit_price: 8,
+    total_price: 4,
+    payment_type: "CASH",
+    amount_paid: 5,
+    customer_balance: 1,
+    created_by: "Raj Patel",
+    date_of_purchase: "2024-01-31"
+  },
+  {
+    customer_name: "Alice Johnson",
+    product_name: "Mixed Nuts",
+    weight: 0.4,
+    unit_price: 20,
+    total_price: 8,
+    payment_type: "CARD",
+    amount_paid: 8,
+    customer_balance: 0,
+    created_by: "Maria Gonzalez",
+    date_of_purchase: "2024-02-03"
+  },
+  {
+    customer_name: "Carlos Rodriguez",
+    product_name: "Red Fish",
+    weight: 2,
+    unit_price: 36,
+    total_price: 72,
+    payment_type: "CASH",
+    amount_paid: 80,
+    customer_balance: 8,
+    created_by: "Hiroshi Tanaka",
+    date_of_purchase: "2024-02-06"
+  },
+  {
+    customer_name: "Sara Kim",
+    product_name: "Chicken Wings",
+    weight: 1.5,
+    unit_price: 25,
+    total_price: 37.5,
+    payment_type: "CARD",
+    amount_paid: 40,
+    customer_balance: 2.5,
+    created_by: "Anna Smith",
+    date_of_purchase: "2024-02-09"
+  },
+  {
+    customer_name: "Mohammed Al-Farsi",
+    product_name: "Broccoli",
+    weight: 1,
+    unit_price: 20,
+    total_price: 20,
+    payment_type: "CASH",
+    amount_paid: 20,
+    customer_balance: 0,
+    created_by: "Raj Patel",
+    date_of_purchase: "2024-02-12"
+  },
+  {
+    customer_name: "Elena Rossi",
+    product_name: "Vanilla Ice Cream",
+    weight: 0.5,
+    unit_price: 15,
+    total_price: 7.5,
+    payment_type: "CARD",
+    amount_paid: 10,
+    customer_balance: 2.5,
+    created_by: "Maria Gonzalez",
+    date_of_purchase: "2024-02-15"
+  },
+  {
+    customer_name: "John Bellions",
+    product_name: "Ground Beef",
+    weight: 2,
+    unit_price: 50,
+    total_price: 100,
+    payment_type: "CASH",
+    amount_paid: 100,
+    customer_balance: 0,
+    created_by: "Hiroshi Tanaka",
+    date_of_purchase: "2024-02-18"
+  },
+  {
+    customer_name: "Alice Johnson",
+    product_name: "Orange Juice",
+    weight: 1,
+    unit_price: 10,
+    total_price: 10,
+    payment_type: "CARD",
+    amount_paid: 10,
+    customer_balance: 0,
+    created_by: "Anna Smith",
+    date_of_purchase: "2024-02-21"
+  },
+  {
+    customer_name: "Carlos Rodriguez",
+    product_name: "Cheddar Cheese",
+    weight: 0.3,
+    unit_price: 30,
+    total_price: 9,
+    payment_type: "CASH",
+    amount_paid: 15,
+    customer_balance: 6,
+    created_by: "Raj Patel",
+    date_of_purchase: "2024-02-24"
+  },
+  {
+    customer_name: "Sara Kim",
+    product_name: "Sliced Bread",
+    weight: 0.8,
+    unit_price: 15,
+    total_price: 12,
+    payment_type: "CARD",
+    amount_paid: 12,
+    customer_balance: 0,
+    created_by: "Maria Gonzalez",
+    date_of_purchase: "2024-02-27"
+  },
+];
+
+
+
+
+export { navigationItems, mockProducts, mockCustomers, mockEmployees, mockTransactions };

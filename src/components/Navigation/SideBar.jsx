@@ -6,7 +6,7 @@ const SideBar = () => {
   const [activeLink, setActiveLink] = useState(0);
 
   return (
-    <div className="flex flex-col border border-gray-400 h-screen w-64">
+    <div className="flex flex-col border border-gray-400 h-screen">
       <div className="border-b border-gray-400 text-2xl font-bold h-16 flex justify-center items-center">
         FreezeHaven
       </div>

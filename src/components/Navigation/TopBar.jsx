@@ -3,9 +3,9 @@ import AVATAR from "../../assets/avator.jpg"
 
 const TopBar = () => {
   return (
-    <div className="border-b border-gray-400 w-screen h-16 flex items-center justify-between">
+    <div className="border-b px-4 border-gray-400 h-16 flex items-center justify-between">
       {/* Search bar */}
-      <div className="border w-68 overflow-hidden flex  rounded-full bg-slate-300/90 p-1 ml-4">
+      <div className="border w-68 overflow-hidden flex  rounded-full bg-slate-300/90 p-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
