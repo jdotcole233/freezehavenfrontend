@@ -422,6 +422,26 @@ const mockTransactions = [
   // ... (remaining records with incremental ids)
 ];
 
+const mockEmployeeDetails = [
+  {
+    salary: 400, 
+    date_paid: "2023-01-01"
+  },
+  {
+    salary: 400, 
+    date_paid: "2023-01-01"
+  },
+  {
+    salary: 400, 
+    date_paid: "2023-01-01"
+  },
+  {
+    salary: 400, 
+    date_paid: "2023-01-01"
+  },
+]
+
+
 export {
   navigationItems,
   mockProducts,
@@ -429,4 +449,5 @@ export {
   mockEmployees,
   mockTransactions,
   mockProductDetails,
+  mockEmployeeDetails
 };

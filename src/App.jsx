@@ -3,6 +3,7 @@ import { SideBar, TopBar } from "./components/Navigation";
 import { Routes, Route } from "react-router-dom";
 import { navigationItems } from "./assets/data";
 import { ViewProduct } from "./components/Products";
+import { ViewEmployee } from "./components/Employees";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               />
             ))}
             <Route path="/products/:id" element={<ViewProduct />} />
+            <Route path="/employees/:id" element={<ViewEmployee />} />
           </Routes>
         </section>
       </main>

@@ -2,6 +2,7 @@ import { mockEmployees } from "../../assets/data";
 import { DataTable } from "../UtilityComponent";
 import { useState } from "react";
 import { AddEmployee } from ".";
+import { useNavigate } from "react-router-dom";
 
 const columnNames = [
   "Employee Name",
@@ -17,10 +18,16 @@ const Employees = () => {
   const [employeeModal, setEmployeeModal] = useState(false);
   const [editEmployee, setEditEmployee] = useState({});
 
+  const navigate = useNavigate();
+
   const editRow = (row) => {
     setEditEmployee(row);
     setEmployeeModal(true);
   };
+
+  const viewRow = (id) => {
+    navigate(`/employees/${id}`)
+  }
 
   return (
     <div className="p-4">
@@ -52,7 +59,7 @@ const Employees = () => {
         </button>
       </div>
 
-      <DataTable rows={mockEmployees} columnNames={columnNames} editRow={editRow} />
+      <DataTable rows={mockEmployees} columnNames={columnNames} editRow={editRow} viewRow={viewRow} />
       {
         employeeModal && (<AddEmployee closeModal={setEmployeeModal}  editEmployee={editEmployee} setEditEmployee={setEditEmployee} />)
       }
