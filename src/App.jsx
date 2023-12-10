@@ -5,11 +5,12 @@ import { navigationItems } from "./assets/data";
 
 function App() {
   return (
-    <div className="flex w-screen h-auto">
-      <div className="w-80">
+    <div className="flex w-screen h-screen">
+      {/* <div className="w-80"> */}
+      <div className="w-1/4">
         <SideBar />
       </div>
-      <main className="w-screen">
+      <main className="flex-1 w-screen">
         <TopBar />
         <Routes>
           {navigationItems.map((navigationItem, key) => (

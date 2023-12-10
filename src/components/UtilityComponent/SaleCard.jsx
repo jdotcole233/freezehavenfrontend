@@ -2,7 +2,7 @@ import SADIA from "../../assets/Sadia_sausage.png";
 
 const SaleCard = () => {
   return (
-    <div className="border overflow-hidden flex flex-col border-gray-200 shadow-sm w-64 h-80 rounded-md">
+    <div className="border overflow-hidden flex flex-col border-gray-200 shadow-sm w-56 h-80 rounded-md">
       <div
         style={{
           backgroundImage: `url(${SADIA})`,
