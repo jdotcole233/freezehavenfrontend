@@ -1,14 +1,23 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { DataTable } from "../UtilityComponent";
 import { mockTransactions } from "../../assets/data";
+import EditTransaction from "./EditTransactions";
 
 
 const columnNames = [
-    'Customer Name', 'Product Name', 'Weight', 'Unit Price', 'Total price', 'Payment Method', 'Amount Paid', 'Customer Balance', 'Created By', 'Date of purchase'
+    'Customer', 'Product', 'Weight', 'Price', 'Total price', 'Payment', 'Amt Paid', 'Balance', 'Created', 'Purchase on'
 ]
 
 
 const Transactions = () => {
+  const [transactionModal, setTransactionModal] = useState(false)
+  const [transactionRow, setTransactionRow] = useState({})
+
+  const editRow = (row) => {
+    setTransactionModal(true)
+    setTransactionRow(row)
+  } 
     return (
         <div className="p-4">
         <div className="flex justify-between items-center">
@@ -36,7 +45,12 @@ const Transactions = () => {
           </Link>
         </div>
   
-        <DataTable  rows={mockTransactions} columnNames={columnNames}/>
+        <DataTable  rows={mockTransactions} columnNames={columnNames} editRow={editRow} />
+        {
+          transactionModal && (
+            <EditTransaction closeModal={setTransactionModal} editTransaction={transactionRow} setTransactionRow={setTransactionRow} />
+          ) 
+        }
       </div>
     )
 }

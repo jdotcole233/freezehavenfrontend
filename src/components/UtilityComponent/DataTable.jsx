@@ -113,16 +113,19 @@ const DataTable = ({
         <tbody>
           {rows?.map((row, key) => (
             <tr className="hover:bg-slate-200 cursor-pointer" key={key}>
-              {Object.entries(row).map(([key, value], index) => (
-                <td
-                  className=" border-b border-b-gray-300 h-9 py-4 px-2"
-                  key={index}
-                >
-                  {value}
-                </td>
-              ))}
+              {Object.entries(row).map(
+                ([key, value], index) =>
+                  key !== "id" && (
+                    <td
+                      className=" border-b border-b-gray-300 h-9 py-4 px-2"
+                      key={index}
+                    >
+                      {value}
+                    </td>
+                  )
+              )}
               <td className="border-b border-b-gray-400">
-                <button onClick={viewRow} className="mr-6">
+                <button onClick={() => viewRow(row?.id)} className="mr-6">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"

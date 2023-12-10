@@ -76,7 +76,9 @@ const AddProduct = ({ closeModal, editProduct, setEditProduct }) => {
 
           <div className="flex gap-4 py-4">
             <button className=" bg-slate-500 px-4 py-2 w-36 text-lg text-white rounded-md ">Cancel</button>
-            <button className=" bg-orange-500 px-4 py-2 w-36 text-lg text-white rounded-md ">Add</button>
+            <button className=" bg-orange-500 px-4 py-2 w-36 text-lg text-white rounded-md ">
+            {Object.keys(editProduct).length ? "Update" : "Add"}
+            </button>
           </div>
 
         </form>

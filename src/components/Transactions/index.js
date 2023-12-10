@@ -1,5 +1,7 @@
 import Transactions from "./Transactions";
+import EditTransaction from "./EditTransactions";
 
 export {
-    Transactions
+    Transactions,
+    EditTransaction
 }

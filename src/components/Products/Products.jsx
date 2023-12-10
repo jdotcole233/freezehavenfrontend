@@ -2,20 +2,27 @@ import { useState } from "react";
 import { DataTable } from "../UtilityComponent";
 import { mockProducts } from "../../assets/data";
 import { AddProduct } from "."
+import { useNavigate } from "react-router-dom"
 
 const columnNames = [
-    'Product Name', 'Product Type', 'Category', 'Cost Price', 'Weight', 'Quantity'
+    'Product Name', 'Product Type', 'Category', 'Created By', 'Status',
 ]
 
 const Products = () => {
   const [addProductFrom, setAddProductForm] = useState(false)
 
   const [editProduct, setEditProduct] = useState({})
+  const navigate = useNavigate()
 
   const editRow = (row) => {
     setEditProduct(row)
     setAddProductForm(true)
     console.log("Editing row ", row)
+  }
+
+  const viewRow = (id) => {
+    console.log(id)
+    navigate(`/products/${id}`)
   }
 
   return (
@@ -46,7 +53,7 @@ const Products = () => {
         </button>
       </div>
 
-      <DataTable  rows={mockProducts} columnNames={columnNames} editRow={editRow}/>
+      <DataTable  rows={mockProducts} columnNames={columnNames} editRow={editRow} viewRow={viewRow}/>
 
       {
         addProductFrom && (<AddProduct closeModal={setAddProductForm} editProduct={editProduct} setEditProduct={setEditProduct} />)

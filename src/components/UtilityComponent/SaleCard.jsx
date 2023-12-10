@@ -8,6 +8,7 @@ const SaleCard = () => {
           backgroundImage: `url(${SADIA})`,
           backgroundPosition: "center",
           backgroundSize: "100%",
+          backgroundRepeat: 'no-repeat'
         }}
         className="h-52"
       ></div>
