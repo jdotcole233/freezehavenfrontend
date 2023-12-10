@@ -1,6 +1,6 @@
 const AddProduct = ({ closeModal, editProduct, setEditProduct }) => {
   return (
-    <div className="flex transition-opacity justify-center py-8 items-center bg-black/25 z-50 absolute top-0 left-0 w-full h-screen">
+    <div className="flex transition-opacity justify-center py-8 items-center bg-black/25 z-50 fixed top-0 left-0 w-full h-screen">
       {/* Add Product Form */}
       <div className=" w-[900px] h-auto rounded-md bg-white shadow-md">
         <div className="flex justify-between py-4 px-4">

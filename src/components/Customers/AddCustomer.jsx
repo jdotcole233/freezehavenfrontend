@@ -1,6 +1,6 @@
 const AddCustomer = ({ closeModal, rowData, setRowData }) => {
   return (
-    <div className="absolute flex justify-center items-center py-4 top-0 left-0 bg-black/25 w-full h-full">
+    <div className="fixed flex justify-center z-50 items-center py-4 top-0 left-0 bg-black/25 w-full h-full">
       <div className="bg-white w-[900px] h-auto rounded-md">
         <div className="flex justify-between py-4 px-4">
           <h1 className="text-lg font-semibold">

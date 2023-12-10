@@ -32,7 +32,7 @@ const Sales = () => {
         </Link>
       </div>
 
-      <div className="mt-4 grid grid-cols-4  flex-wrap gap-x-14 gap-y-2">
+      <div className="mt-4 flex flex-wrap gap-2">
         {
             [1,2,3,4,1,1,1,1,1,1].map((product, key) => (
                 <SaleCard key={key} />

@@ -125,7 +125,8 @@ const DataTable = ({
                   )
               )}
               <td className="border-b border-b-gray-400">
-                <button onClick={() => viewRow(row?.id)} className="mr-6">
+                {
+                  viewRow && (<button onClick={() => viewRow(row?.id)} className="mr-6">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -145,8 +146,10 @@ const DataTable = ({
                       d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                     />
                   </svg>
-                </button>
-                <button onClick={() => editRow(row)} className="mr-6">
+                </button>)
+                }
+                {
+                  editRow && <button onClick={() => editRow(row)} className="mr-6">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -162,6 +165,7 @@ const DataTable = ({
                     />
                   </svg>
                 </button>
+                }
                 <button onClick={deleteRow}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

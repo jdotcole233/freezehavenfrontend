@@ -2,12 +2,12 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { navigationItems } from "../../assets/data";
 
-const SideBar = () => {
+const SideBar = ({ collapse }) => {
   const [activeLink, setActiveLink] = useState(0);
 
   return (
     <div className="flex flex-col border-r border-gray-400 h-full">
-      <nav className="flex flex-col  px-4 pt-2   ">
+      <nav className={`flex flex-col  ${ collapse ? 'px-4' : 'w-20 px-2 items-center'} pt-2`}>
         <div>
           {navigationItems.map((navigationItem, key) => (
             <Link
@@ -20,7 +20,9 @@ const SideBar = () => {
             >
               {navigationItem.icon}
               <span className="px-2 font-semibold">
-                {navigationItem.title}{" "}
+                {
+                  collapse && navigationItem.title
+                }
               </span>
             </Link>
           ))}
@@ -40,7 +42,9 @@ const SideBar = () => {
               d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
             />
           </svg>
-          Logout
+          {
+            collapse && 'Logout'
+          }
         </button>
       </nav>
     </div>

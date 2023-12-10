@@ -1,9 +1,13 @@
+import { useState } from "react";
 import { mockEmployeeDetails } from "../../assets/data";
 import { DataTable } from "../UtilityComponent";
+import AddEmployeeSalary from "./AddEmployeeSalary";
 
 const columnNames = ["Salary", "Date paid"];
 
 const ViewEmployee = () => {
+    const [addEmployeeSalaryModal, setEmployeeSalaryModal] = useState(false);
+   
   return (
     <div className="p-4">
       <div className="flex justify-between">
@@ -48,13 +52,15 @@ const ViewEmployee = () => {
             <h1 className="text-lg font-semibold">Employee Salary List</h1>
             <p>Manage employee salary details</p>
           </div>
-          <button className="bg-orange-500 px-2 py-1 rounded-md text-white">
+        <button onClick ={() => setEmployeeSalaryModal(true)}  className="bg-orange-500 px-2 py-1 rounded-md text-white">
             Add Employee Salary
           </button>
         </div>
 
         <DataTable columnNames={columnNames} rows={mockEmployeeDetails} />
+        { addEmployeeSalaryModal && <AddEmployeeSalary  closeModal={setEmployeeSalaryModal} />}
       </div>
+ 
     </div>
   );
 };

@@ -4,6 +4,7 @@ import { Products } from "../components/Products";
 import { Customers } from "../components/Customers";
 import { Employees } from "../components/Employees";
 import { Transactions } from "../components/Transactions";
+import { Expenses } from "../components/Expenses";
 
 const navigationItems = [
   {
@@ -131,7 +132,7 @@ const navigationItems = [
       </svg>
     ),
     path: "/expenses",
-    component: <Test />,
+    component: <Expenses />,
   },
   {
     title: "Employees",
@@ -441,6 +442,53 @@ const mockEmployeeDetails = [
   },
 ]
 
+const mockExpenses = [
+  {
+    expense_category: "Snacks",
+    reference: "EXP01",
+    date: "2023-12-2",
+    amount: 200,
+    description: "Feeding",
+  },
+  {
+    expense_category: "Office Supplies",
+    reference: "EXP02",
+    date: "2023-12-5",
+    amount: 150,
+    description: "Purchase of stationery",
+  },
+  {
+    expense_category: "Utilities",
+    reference: "EXP03",
+    date: "2023-12-8",
+    amount: 300,
+    description: "Electricity bill",
+  },
+  {
+    expense_category: "Transportation",
+    reference: "EXP04",
+    date: "2023-12-12",
+    amount: 120,
+    description: "Fuel for delivery vehicles",
+  },
+  {
+    expense_category: "Maintenance",
+    reference: "EXP05",
+    date: "2023-12-15",
+    amount: 180,
+    description: "Repair and maintenance",
+  },
+  {
+    expense_category: "Marketing",
+    reference: "EXP06",
+    date: "2023-12-18",
+    amount: 250,
+    description: "Advertising campaign",
+ 
+  },
+];
+
+
 
 export {
   navigationItems,
@@ -449,5 +497,6 @@ export {
   mockEmployees,
   mockTransactions,
   mockProductDetails,
-  mockEmployeeDetails
+  mockEmployeeDetails,
+  mockExpenses
 };

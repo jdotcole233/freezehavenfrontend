@@ -1,13 +1,61 @@
+import { useState } from "react";
 import AVATAR from "../../assets/avator.jpg";
-import LOGO from '../../assets/FreezeHavenLogo.png';
+import LOGO from "../../assets/FreezeHavenLogo.png";
+import FREEZER from "../../assets/Freezer.png";
 
-const TopBar = () => {
+const TopBar = ({ setUpCollapse }) => {
+  const [collapse, setCollapse] = useState(false);
+
+  const toggleCollapse = (state) => {
+    setCollapse(state)
+    setUpCollapse(state)
+  }
+
   return (
     <div className="border-b fixed w-full  z-50 bg-white  border-gray-400 h-16 flex items-center ">
-      <div className="border-r w-1/4 border-gray-400 text-2xl font-extrabold h-16 flex justify-center items-center">
-        <img className=" w-36" src={LOGO} alt="" />
+      <div className={`border-r ${ collapse ? 'w-1/4' : ' w-20 flex px-1'} border-gray-400 text-2xl font-extrabold h-16 flex justify-center items-center`}>
+        {
+          collapse ? (<img className=" w-36" src={LOGO} alt="" />) : (<img className=" w-8" src={FREEZER} alt="" />)
+        }
+        <div className={`relative  ${ collapse ? 'left-20' : ' left-5'} cursor-pointer`}>
+          {!collapse ? (
+            <div onClick={() => toggleCollapse(!false)} className=" flex justify-center items-center px-1 py-1 rounded-full bg-orange-500 text-white">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-4 h-4"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"
+              />
+            </svg>
+           </div>
+          ) : (
+            <div onClick={() => toggleCollapse(!true)} className=" flex justify-center items-center px-1 py-1 rounded-full bg-orange-500 text-white">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-4 h-4"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
+              />
+            </svg>
+            </div>
+          )}
+        </div>
       </div>
-      <div className="flex items-center flex-1 justify-between px-2">
+      <div className="flex items-center flex-1 justify-between px-4">
         {/* Search bar */}
         <div className="w-68 overflow-hidden flex  rounded-full bg-[#F6F7F8] p-1">
           <svg
@@ -74,7 +122,7 @@ const TopBar = () => {
           </div>
         </div>
       </div>
-     </div>
+    </div>
   );
 };
 

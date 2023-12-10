@@ -6,13 +6,15 @@ import { ViewProduct } from "./components/Products";
 import { ViewEmployee } from "./components/Employees";
 
 function App() {
+  const [collapse, setCollapse] = useState(false)
+
   return (
     <div className="flex flex-col h-auto">
-      <TopBar />
+      <TopBar setUpCollapse={setCollapse} />
 
       <main className="flex  mt-16">
-        <div className="w-1/4">
-          <SideBar />
+        <div className={`${ collapse ? 'w-1/4' : ''}`}>
+          <SideBar  collapse={collapse} />
         </div>
         <section className=" flex-1">
           <Routes>
