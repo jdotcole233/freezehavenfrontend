@@ -5,6 +5,7 @@ import { Customers } from "../components/Customers";
 import { Employees } from "../components/Employees";
 import { Transactions } from "../components/Transactions";
 import { Expenses } from "../components/Expenses";
+import Dashboard from "../components/Dashboard/Dashboard";
 
 const navigationItems = [
   {
@@ -27,7 +28,7 @@ const navigationItems = [
     ),
 
     path: "/",
-    component: <Test />,
+    component: <Dashboard />,
   },
   {
     title: "Sales",
