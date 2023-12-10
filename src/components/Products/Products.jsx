@@ -10,7 +10,16 @@ const columnNames = [
 const Products = () => {
   const [addProductFrom, setAddProductForm] = useState(false)
 
+  const [editProduct, setEditProduct] = useState({})
+
+  const editRow = (row) => {
+    setEditProduct(row)
+    setAddProductForm(true)
+    console.log("Editing row ", row)
+  }
+
   return (
+
     <div className="p-4">
       <div className="flex justify-between items-center">
         <div>
@@ -37,10 +46,10 @@ const Products = () => {
         </button>
       </div>
 
-      <DataTable  rows={mockProducts} columnNames={columnNames}/>
+      <DataTable  rows={mockProducts} columnNames={columnNames} editRow={editRow}/>
 
       {
-        addProductFrom && (<AddProduct closeModal={setAddProductForm} />)
+        addProductFrom && (<AddProduct closeModal={setAddProductForm} editProduct={editProduct} setEditProduct={setEditProduct} />)
       }
     </div>
   );

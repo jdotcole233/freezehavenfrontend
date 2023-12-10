@@ -1,12 +1,15 @@
-const AddProduct = ({ closeModal }) => {
+const AddProduct = ({ closeModal, editProduct, setEditProduct }) => {
   return (
     <div className="flex transition-opacity justify-center py-8 items-center bg-black/25 z-50 absolute top-0 left-0 w-full h-screen">
       {/* Add Product Form */}
       <div className=" w-[900px] h-auto rounded-md bg-white shadow-md">
         <div className="flex justify-between py-4 px-4">
-          <h1 className="text-lg font-semibold">Add New Product</h1>
+          <h1 className="text-lg font-semibold"> {Object.keys(editProduct).length ? 'Edit': 'Add New'} Product</h1>
           <svg
-            onClick={() => closeModal(false)}
+            onClick={() => {
+              closeModal(false)
+              setEditProduct({})
+            }}
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -29,6 +32,7 @@ const AddProduct = ({ closeModal }) => {
               Product Name
             </label>
             <input
+              value={editProduct.product_name ||''}
               className="border px-2  outline-none h-12 rounded-md w-full"
               type="text"
               placeholder="E.g. Kpanla"
@@ -40,7 +44,7 @@ const AddProduct = ({ closeModal }) => {
               <label className="text-lg font-thin mb-2" htmlFor="Product Name">
                 Product Type
               </label>
-              <select className="border px-2  outline-none h-12 rounded-md w-full">
+              <select value={editProduct.product_type ||''} className="border px-2  outline-none h-12 rounded-md w-full">
                 <option value="">Choose Type</option>
                 <option value="Fish">Fish</option>
                 <option value="Poultry">Poultry</option>
@@ -51,7 +55,7 @@ const AddProduct = ({ closeModal }) => {
               <label className="text-lg font-thin mb-2" htmlFor="Product Name">
                 Product Category
               </label>
-              <select className="border px-2  outline-none h-12 rounded-md w-full">
+              <select value={editProduct.product_category || ''} className="border px-2  outline-none h-12 rounded-md w-full">
                 <option value="">Choose Category</option>
                 <option value="Frozen Food">Frozen Food</option>
                 <option value="Water">Water</option>
