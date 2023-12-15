@@ -4,6 +4,9 @@ import { Routes, Route } from "react-router-dom";
 import { navigationItems } from "./assets/data";
 import { ViewProduct } from "./components/Products";
 import { ViewEmployee } from "./components/Employees";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function App() {
   const [collapse, setCollapse] = useState(false)
@@ -13,10 +16,10 @@ function App() {
       <TopBar setUpCollapse={setCollapse} />
 
       <main className="flex  mt-16">
-        <div className={`${ collapse ? 'w-1/4' : ''}`}>
+        <div className={`fixed bg-white h-full ${ collapse ? ' w-64' : ''}`}>
           <SideBar  collapse={collapse} />
         </div>
-        <section className=" flex-1">
+        <section className={`${ collapse ? ' ml-64' : 'ml-20'} flex-1`}>
           <Routes>
             {navigationItems.map((navigationItem, key) => (
               <Route
@@ -28,6 +31,7 @@ function App() {
             <Route path="/products/:id" element={<ViewProduct />} />
             <Route path="/employees/:id" element={<ViewEmployee />} />
           </Routes>
+          <ToastContainer position="bottom-right" />
         </section>
       </main>
     </div>

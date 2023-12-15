@@ -4,21 +4,32 @@ import LOGO from "../../assets/FreezeHavenLogo.png";
 import FREEZER from "../../assets/Freezer.png";
 import SaleCard from "../UtilityComponent/SaleCard";
 import Context from "../../context/context";
+import { toast } from "react-toastify";
 
 const TopBar = ({ setUpCollapse }) => {
   const [collapse, setCollapse] = useState(false);
-  const { cart } = useContext(Context);
+  const { cart, setShowBag } = useContext(Context);
 
   const toggleCollapse = (state) => {
     setCollapse(state);
     setUpCollapse(state);
   };
 
+  const showBagWhenNotEmpty = () => {
+    if (!cart?.length) {
+      toast.warn("Select an item to checkout", {
+        theme: "colored",
+      });
+      return;
+    }
+    setShowBag(true);
+  };
+
   return (
     <div className="border-b fixed w-full  z-50 bg-white  border-gray-400 h-16 flex items-center ">
       <div
         className={`border-r ${
-          collapse ? "w-1/4" : " w-20 flex px-1"
+          collapse ? "w-64" : " w-20 flex px-1"
         } border-gray-400 text-2xl font-extrabold h-16 flex justify-center items-center`}
       >
         {collapse ? (
@@ -28,7 +39,7 @@ const TopBar = ({ setUpCollapse }) => {
         )}
         <div
           className={`relative  ${
-            collapse ? "left-20" : " left-5"
+            collapse ? "left-14" : " left-5"
           } cursor-pointer`}
         >
           {!collapse ? (
@@ -100,7 +111,10 @@ const TopBar = ({ setUpCollapse }) => {
 
         {/* Avatar */}
         <div className="flex items-center ">
-          <div className="flex px-1 py-2 justify-center items-center  bg-[#F6F7F8] rounded-full mr-6">
+          <div
+            onClick={showBagWhenNotEmpty}
+            className=" cursor-pointer flex px-1 py-2 justify-center items-center  bg-[#F6F7F8] rounded-full mr-6"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
