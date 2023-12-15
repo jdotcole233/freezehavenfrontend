@@ -1,4 +1,8 @@
 
+
+const colors = ["orange-500", "blue-500", "blue-800", "green-500"];
+
+
 const Dashboard = () => {
   return (
     <div className="p-4 flex flex-col gap-6">
@@ -9,8 +13,8 @@ const Dashboard = () => {
       </div>
 
       <div className="flex flex-wrap gap-4">
-        {[1, 1, 1, 1].map((card, key) => (
-          <DataCardColor key={key} index={key} />
+        {colors.map((color, key) => (
+          <DataCardColor key={key} color={color} />
         ))}
       </div>
     </div>
@@ -44,12 +48,12 @@ const DataCard = () => {
   );
 };
 
-const colors = ["orange-500", "blue-500", "blue-800", "green-500"];
 
-const DataCardColor = ({ index }) => {
+const DataCardColor = ({ color }) => {
+  console.log(`bg-${color}`)
   return (
     <div
-      className={`flex  bg-${colors[index]} items-center  justify-between   border-slate-400 text-white flex-1 p-4 h-24 rounded-md`}
+      className={`flex   bg-${color} items-center  justify-between   border-slate-400 text-white flex-1 p-4 h-24 rounded-md`}
     >
       <div>
         <h1 className="text-xl font-semibold">GHC 34000 </h1>

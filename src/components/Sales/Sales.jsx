@@ -8,6 +8,7 @@ const Sales = () => {
         <div>
           <h1 className="text-xl font-semibold">Product List</h1>
           <p className="text-sm font-thin">Sell products</p>
+          
         </div>
 
         <Link

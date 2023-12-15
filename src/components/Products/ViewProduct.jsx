@@ -1,6 +1,8 @@
 import SAUSAGE from "../../assets/Sadia_sausage.png";
 import { mockProductDetails } from "../../assets/data";
 import { DataTable } from "../UtilityComponent";
+import AddProductDetails  from "./AddProductDetails";
+import { useState } from "react";
 
 
 const columnNames = [
@@ -9,6 +11,8 @@ const columnNames = [
 ]
 
 const ViewProduct = () => {
+  const [addProductDetailsModal, setProductDetailsModal] = useState(false);
+
   return (
     <div className="p-4">
       <div className="flex justify-between">
@@ -57,7 +61,7 @@ const ViewProduct = () => {
             className=" h-52"
           ></div>
           <div className="px-2 flex py-2 justify-center">
-            <button className="bg-orange-500 px-2 py-1 rounded-md text-white">
+            <button onClick={ ()=> {setProductDetailsModal(true)}} className="bg-orange-500 px-2 py-1 rounded-md text-white">
               Add Product Details
             </button>
           </div>
@@ -71,6 +75,9 @@ const ViewProduct = () => {
         </div>
 
         <DataTable columnNames={columnNames} rows={mockProductDetails} />
+        {
+          addProductDetailsModal && <AddProductDetails closeModal={setProductDetailsModal}/>
+        }
       </div>
     </div>
   );
