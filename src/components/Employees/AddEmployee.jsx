@@ -1,4 +1,16 @@
+import { useForm } from "react-hook-form";
+
 const AddEmployee = ({ closeModal, editEmployee, setEditEmployee }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const submitForm = (data) => {
+    console.log(data);
+  };
+
   return (
     <div className="flex transition-opacity justify-center py-8 items-center bg-black/25 z-50 fixed top-0 left-0 w-full h-screen">
       {/* Add Product Form */}
@@ -29,17 +41,42 @@ const AddEmployee = ({ closeModal, editEmployee, setEditEmployee }) => {
         </div>
 
         {/* Form */}
-        <form className="flex flex-col gap-3 px-4" action="">
-          <div className="w-full ">
-            <label className="text-lg font-thin mb-2" htmlFor="Employee Name">
-              Employee Name
-            </label>
-            <input
-              value={editEmployee?.employee_name || ""}
-              className="border px-2  outline-none h-12 rounded-md w-full"
-              type="text"
-              placeholder="E.g. Emmanuel Amissah"
-            />
+        <div className="flex flex-col gap-3 px-4" action="">
+          <div className="grid grid-cols-2 gap-2">
+            <div className="w-full">
+              <label className="text-lg font-thin mb-2" htmlFor="First Name">
+                First Name
+              </label>
+              <input
+                defaultValue={editEmployee?.employee_name || ""}
+                {...register("first_name", {
+                  required: "First name is required",
+                })}
+                className="border px-2  outline-none h-12 rounded-md w-full"
+                type="text"
+                placeholder="E.g. John"
+              />
+              <span className="text-red-500">
+                {errors?.first_name && errors?.first_name?.message}
+              </span>
+            </div>
+            <div className="w-full ">
+              <label className="text-lg font-thin mb-2" htmlFor="Last Name">
+                Last Name
+              </label>
+              <input
+                defaultValue={editEmployee?.employee_name || ""}
+                {...register("last_name", {
+                  required: "Last name required",
+                })}
+                className="border px-2  outline-none h-12 rounded-md w-full"
+                type="text"
+                placeholder="E.g. Doe"
+              />
+              <span className="text-red-500">
+                {errors?.last_name && errors?.last_name?.message}
+              </span>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-2">
@@ -48,11 +85,17 @@ const AddEmployee = ({ closeModal, editEmployee, setEditEmployee }) => {
                 Phone Number
               </label>
               <input
-                value={editEmployee?.phone_number || ""}
+                defaultValue={editEmployee?.phone_number || ""}
+                {...register("phone_number", {
+                  required: "Phone number is required",
+                })}
                 className="border px-2  outline-none h-12 rounded-md w-full"
                 type="tel"
                 placeholder="E.g. 0503889900"
               />
+              <span className="text-red-500">
+                {errors?.phone_number && errors?.phone_number?.message}
+              </span>
             </div>
             <div className="w-full ">
               <label
@@ -62,11 +105,18 @@ const AddEmployee = ({ closeModal, editEmployee, setEditEmployee }) => {
                 Date of Employment
               </label>
               <input
-                value={editEmployee?.date_of_employment || ""}
+                defaultValue={editEmployee?.date_of_employment || ""}
+                {...register("date_of_employement", {
+                  required: "Enter date of employement",
+                })}
                 className="border px-2  outline-none h-12 rounded-md w-full"
                 type="date"
                 placeholder="E.g. Kpanla"
               />
+              <span className="text-red-500">
+                {errors?.date_of_employment &&
+                  errors?.date_of_employment?.message}
+              </span>
             </div>
           </div>
 
@@ -79,7 +129,8 @@ const AddEmployee = ({ closeModal, editEmployee, setEditEmployee }) => {
                 Date of Termination
               </label>
               <input
-                value={editEmployee?.date_of_termination || ""}
+                defaultValue={editEmployee?.date_of_termination || ""}
+                {...register("date_of_termination")}
                 className="border px-2  outline-none h-12 rounded-md w-full"
                 type="date"
                 placeholder="E.g. Kpanla"
@@ -90,11 +141,17 @@ const AddEmployee = ({ closeModal, editEmployee, setEditEmployee }) => {
                 Location
               </label>
               <input
-                value={editEmployee?.location || ""}
+                defaultValue={editEmployee?.location || ""}
+                {...register("location", {
+                  required: "Location is required",
+                })}
                 className="border px-2  outline-none h-12 rounded-md w-full"
                 type="text"
                 placeholder="E.g. Ablor Adjei"
               />
+              <span className="text-red-500">
+                {errors?.location && errors?.location?.message}
+              </span>
             </div>
           </div>
 
@@ -104,20 +161,27 @@ const AddEmployee = ({ closeModal, editEmployee, setEditEmployee }) => {
                 Gender
               </label>
               <select
-                value={editEmployee?.gender || ""}
+                {...register("gender", {
+                  required: "Gender is required",
+                })}
+                defaultValue={editEmployee?.gender || ""}
                 className="border px-2  outline-none h-12 rounded-md w-full"
               >
                 <option value="">Choose gender</option>
                 <option value="MALE">Male</option>
                 <option value="FEMALE">Female</option>
               </select>
+              <span className="text-red-500">
+                {errors?.gender && errors?.gender?.message}
+              </span>
             </div>
             <div className="w-full ">
               <label className="text-lg font-thin mb-2" htmlFor="Date of Birth">
                 Date of Birth
               </label>
               <input
-                value={editEmployee?.dob || ""}
+                {...register("dob")}
+                defaultValue={editEmployee?.dob || ""}
                 className="border px-2  outline-none h-12 rounded-md w-full"
                 type="date"
                 placeholder="E.g. Kpanla"
@@ -129,11 +193,14 @@ const AddEmployee = ({ closeModal, editEmployee, setEditEmployee }) => {
             <button className=" bg-slate-500 px-4 py-2 w-36 text-lg text-white rounded-md ">
               Cancel
             </button>
-            <button className=" bg-orange-500 px-4 py-2 w-36 text-lg text-white rounded-md ">
+            <button
+              onClick={handleSubmit(submitForm)}
+              className=" bg-orange-500 px-4 py-2 w-36 text-lg text-white rounded-md "
+            >
               {Object.keys(editEmployee).length ? "Update" : "Add"}
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
