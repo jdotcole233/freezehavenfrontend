@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 const AddEmployee = ({ closeModal, editEmployee, setEditEmployee }) => {
   const {
@@ -7,8 +9,44 @@ const AddEmployee = ({ closeModal, editEmployee, setEditEmployee }) => {
     formState: { errors },
   } = useForm();
 
+  const [loading, setLoading] = useState(false);
+
   const submitForm = (data) => {
     console.log(data);
+
+    const url = "http://127.0.0.1:8000/api/employee"
+    const method = "POST"
+    const body = JSON.stringify(data)
+
+    fetch(url, {
+      method: method,
+      body: body,
+      headers: {
+        'Content-type': 'application/json'
+      } 
+    })
+    .then((resp) => resp.json())
+    .then((response) => {
+      console.log(response)
+      setLoading(false)
+      toast.success(response.message, {
+        theme: "colored"
+      })
+      closeModal(false)
+    })
+    .catch((error) => {
+      console.log(error)
+      setLoading(false)
+      toast.error("Something went wrong!", {
+        theme: "colored"
+      })
+    })
+    .finally(() => {
+      setLoading(false)
+    })
+
+
+    setLoading(true);
   };
 
   return (
@@ -48,7 +86,7 @@ const AddEmployee = ({ closeModal, editEmployee, setEditEmployee }) => {
                 First Name
               </label>
               <input
-                defaultValue={editEmployee?.employee_name || ""}
+                defaultValue={editEmployee?.first_name || ""}
                 {...register("first_name", {
                   required: "First name is required",
                 })}
@@ -65,7 +103,7 @@ const AddEmployee = ({ closeModal, editEmployee, setEditEmployee }) => {
                 Last Name
               </label>
               <input
-                defaultValue={editEmployee?.employee_name || ""}
+                defaultValue={editEmployee?.last_name || ""}
                 {...register("last_name", {
                   required: "Last name required",
                 })}
@@ -105,8 +143,8 @@ const AddEmployee = ({ closeModal, editEmployee, setEditEmployee }) => {
                 Date of Employment
               </label>
               <input
-                defaultValue={editEmployee?.date_of_employment || ""}
-                {...register("date_of_employement", {
+                defaultValue={editEmployee?.date_employed || ""}
+                {...register("date_employed", {
                   required: "Enter date of employement",
                 })}
                 className="border px-2  outline-none h-12 rounded-md w-full"
@@ -114,8 +152,8 @@ const AddEmployee = ({ closeModal, editEmployee, setEditEmployee }) => {
                 placeholder="E.g. Kpanla"
               />
               <span className="text-red-500">
-                {errors?.date_of_employment &&
-                  errors?.date_of_employment?.message}
+                {errors?.date_employed &&
+                  errors?.date_employed?.message}
               </span>
             </div>
           </div>
@@ -194,10 +232,17 @@ const AddEmployee = ({ closeModal, editEmployee, setEditEmployee }) => {
               Cancel
             </button>
             <button
+              disabled={loading}
               onClick={handleSubmit(submitForm)}
-              className=" bg-orange-500 px-4 py-2 w-36 text-lg text-white rounded-md "
+              className=" disabled:bg-slate-800 bg-orange-500 px-4 py-2 w-36 text-lg text-white rounded-md "
             >
-              {Object.keys(editEmployee).length ? "Update" : "Add"}
+              {loading ? (
+                "loading..."
+              ) : (
+                <span>
+                  {Object.keys(editEmployee).length ? "Update" : "Add"}
+                </span>
+              )}
             </button>
           </div>
         </div>

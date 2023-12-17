@@ -113,7 +113,8 @@ const DataTable = ({
           </tr>
         </thead>
         <tbody>
-          {rows?.map((row, key) => (
+          {
+          rows?.length ? (rows?.map((row, key) => (
             <tr className="hover:bg-slate-200 cursor-pointer" key={key}>
               {Object.entries(row).map(
                 ([key, value], index) =>
@@ -186,7 +187,13 @@ const DataTable = ({
                 </button>
               </td>
             </tr>
-          ))}
+          ))): (
+            <tr>
+              <td>No Data Found</td>
+            </tr>
+          )
+          
+          }
         </tbody>
       </table>
 

@@ -1,12 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { mockEmployeeDetails } from "../../assets/data";
 import { DataTable } from "../UtilityComponent";
 import AddEmployeeSalary from "./AddEmployeeSalary";
+import { useParams } from "react-router-dom";
 
 const columnNames = ["Salary", "Date paid"];
 
 const ViewEmployee = () => {
     const [addEmployeeSalaryModal, setEmployeeSalaryModal] = useState(false);
+    const [employeeSalaries, setEmployeeSalaries] = useState([])
+    const [employee, setEmployee] = useState({})
+    const {id} = useParams()
+
+    const editRow = (row) => {
+      setEmployee(row)
+      setEmployeeSalaryModal(true)
+    }
+
+    const fetchEmployee = () => {
+      const url = `http://127.0.0.1:8000/api/employee/${id}`
+      const method = "GET"
+  
+      fetch(url, {
+        method
+      })
+      .then(res => res.json())
+      .then(response => {
+        setEmployee(response)
+        setEmployeeSalaries(response?.salaries)
+      })
+      .catch(err => {
+        toast.error("Failed to fetch employees")
+      })
+    }
+
+   
+    useEffect(() => {
+      fetchEmployee()
+    }, [addEmployeeSalaryModal])
    
   return (
     <div className="p-4">
@@ -17,28 +48,28 @@ const ViewEmployee = () => {
             <tbody>
               <tr className="h-10 border-b border-slate-500">
                 <td className="font-semibold text-slate-500">Employee Name:</td>
-                <td>Kwame Amoh</td>
+                <td>{employee?.first_name} {employee?.last_name}</td>
               </tr>
               <tr className="h-10 border-b border-slate-500">
                 <td className="font-semibold text-slate-500">Phone Number:</td>
-                <td>0503003033</td>
+                <td>{employee?.phone_number}</td>
               </tr>
               <tr className="h-10 border-b border-slate-500">
                 <td className="font-semibold text-slate-500">
                   Gender:
                 </td>
-                <td>Male (1997-04-18)</td>
+                <td>{employee?.gender} ({employee?.dob})</td>
               </tr>
               <tr className="h-10 border-b border-slate-500">
                 <td className="font-semibold text-slate-500">Working period:</td>
-                <td>2023-04-05 to N/A</td>
+                <td>{employee?.date_employed} to { employee?.date_of_termination ? employee?.date_of_termination : "N/A" }</td>
               </tr>
               <tr className="h-10">
                 <td className="font-semibold text-slate-500">
                   Location:
                 </td>
                 <td>
-                  Ablor Adjei
+                  {employee?.location}
                 </td>
               </tr>
             </tbody>
@@ -57,8 +88,8 @@ const ViewEmployee = () => {
           </button>
         </div>
 
-        <DataTable columnNames={columnNames} rows={mockEmployeeDetails} />
-        { addEmployeeSalaryModal && <AddEmployeeSalary  closeModal={setEmployeeSalaryModal} />}
+        <DataTable columnNames={columnNames} rows={employeeSalaries} editRow={editRow} />
+        { addEmployeeSalaryModal && <AddEmployeeSalary  closeModal={setEmployeeSalaryModal} employee_id={id} employee={employee} />}
       </div>
  
     </div>

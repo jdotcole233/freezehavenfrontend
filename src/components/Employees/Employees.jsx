@@ -1,11 +1,13 @@
 import { mockEmployees } from "../../assets/data";
 import { DataTable } from "../UtilityComponent";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AddEmployee } from ".";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const columnNames = [
-  "Employee Name",
+  "First Name",
+  "Last Name",
   "Phone number",
   "Date of Employement",
   "Date of Termination",
@@ -17,6 +19,7 @@ const columnNames = [
 const Employees = () => {
   const [employeeModal, setEmployeeModal] = useState(false);
   const [editEmployee, setEditEmployee] = useState({});
+  const [employees, setEmployees] = useState([])
 
   const navigate = useNavigate();
 
@@ -24,6 +27,28 @@ const Employees = () => {
     setEditEmployee(row);
     setEmployeeModal(true);
   };
+
+
+  const fetchEmployeeData = () => {
+    const url = "http://127.0.0.1:8000/api/employee"
+    const method = "GET"
+
+    fetch(url, {
+      method
+    })
+    .then(res => res.json())
+    .then(response => {
+      setEmployees(response)
+    })
+    .catch(err => {
+      toast.error("Failed to fetch employees")
+    })
+  }
+
+  useEffect(() => {
+   fetchEmployeeData()    
+  }, [employeeModal])
+
 
   const viewRow = (id) => {
     navigate(`/employees/${id}`)
@@ -59,7 +84,7 @@ const Employees = () => {
         </button>
       </div>
 
-      <DataTable rows={mockEmployees} columnNames={columnNames} editRow={editRow} viewRow={viewRow} />
+      <DataTable rows={employees} columnNames={columnNames} editRow={editRow} viewRow={viewRow} />
       {
         employeeModal && (<AddEmployee closeModal={setEmployeeModal}  editEmployee={editEmployee} setEditEmployee={setEditEmployee} />)
       }
