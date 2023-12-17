@@ -1,4 +1,16 @@
+import { useForm } from "react-hook-form";
+
 const AddCustomer = ({ closeModal, rowData, setRowData }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const submitCustomerForm = (data) => {
+    console.log(data);
+  };
+
   return (
     <div className="fixed flex justify-center z-50 items-center py-4 top-0 left-0 bg-black/25 w-full h-full">
       <div className="bg-white w-[900px] h-auto rounded-md">
@@ -32,7 +44,8 @@ const AddCustomer = ({ closeModal, rowData, setRowData }) => {
               Customer Name
             </label>
             <input
-              value={rowData?.customer_name || ""}
+              defaultValue={rowData?.customer_name || ""}
+              {...register("customer_name")}
               className="border px-2  outline-none h-12 rounded-md w-full"
               type="text"
               placeholder="E.g. James Griffin"
@@ -45,22 +58,34 @@ const AddCustomer = ({ closeModal, rowData, setRowData }) => {
                 Phone number
               </label>
               <input
-                value={rowData?.phone_number || ""}
+                defaultValue={rowData?.phone_number || ""}
+                {...register("phone_number", {
+                  required: "Customer phone number is required",
+                })}
                 className="border px-2  outline-none h-12 rounded-md w-full"
                 type="tel"
                 placeholder="E.g. 0503848414"
               />
+              <span className="text-red-500">
+                {errors?.phone_number && errors?.phone_number?.message}
+              </span>
             </div>
             <div className="w-full ">
               <label className="text-lg font-thin mb-2" htmlFor="Location">
                 Location
               </label>
               <input
-                value={rowData?.location}
+                defaultValue={rowData?.location}
+                {...register("location", {
+                  required: "Customer location is required"
+                })}
                 className="border px-2  outline-none h-12 rounded-md w-full"
                 type="text"
                 placeholder="E.g. Ablor Adjei"
               />
+              <span className="text-red-500">
+                {errors?.location && errors?.location?.message}
+              </span>
             </div>
           </div>
 
@@ -68,7 +93,10 @@ const AddCustomer = ({ closeModal, rowData, setRowData }) => {
             <button className=" bg-slate-500 px-4 py-2 w-36 text-lg text-white rounded-md ">
               Cancel
             </button>
-            <button className=" bg-orange-500 px-4 py-2 w-36 text-lg text-white rounded-md ">
+            <button
+              onClick={handleSubmit(submitCustomerForm)}
+              className=" bg-orange-500 px-4 py-2 w-36 text-lg text-white rounded-md "
+            >
               {Object.keys(rowData).length ? "Update" : "Add"}
             </button>
           </div>
