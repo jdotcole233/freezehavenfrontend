@@ -1,4 +1,5 @@
 const AddExpenses = ({ rowData, closeModal, setRowData }) => {
+  
   return (
     <div className="fixed flex justify-center z-50 items-center py-4 top-0 left-0 bg-black/25 w-full h-full">
       <div className="bg-white w-[900px] h-auto rounded-md">
@@ -26,7 +27,7 @@ const AddExpenses = ({ rowData, closeModal, setRowData }) => {
           </svg>
         </div>
 
-        <form className="flex flex-col gap-3 px-4" action="">
+        <div className="flex flex-col gap-3 px-4" action="">
           <div className="w-full ">
             <label className="text-lg font-thin mb-2" htmlFor="Category">
               Category
@@ -45,7 +46,7 @@ const AddExpenses = ({ rowData, closeModal, setRowData }) => {
                 Reference
               </label>
               <input
-                  value={rowData?.reference || ""}
+                defaultValue = {rowData?.reference || ""}
                 className="border px-2  outline-none h-12 rounded-md w-full"
                 type="text"
                 placeholder="Reference"
@@ -93,7 +94,7 @@ const AddExpenses = ({ rowData, closeModal, setRowData }) => {
               {Object.keys(rowData).length ? "Update" : "Add"}
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
