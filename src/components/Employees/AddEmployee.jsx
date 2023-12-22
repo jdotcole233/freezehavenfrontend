@@ -11,11 +11,17 @@ const AddEmployee = ({ closeModal, editEmployee, setEditEmployee }) => {
 
   const [loading, setLoading] = useState(false);
 
-  const submitForm = (data) => {
-    console.log(data);
 
-    const url = "http://127.0.0.1:8000/api/employee"
-    const method = "POST"
+  const submitForm = (data) => {
+    setLoading(true);
+    let method = "POST"
+    let url = "http://127.0.0.1:8000/api/employee"
+
+    if (Object.keys(editEmployee).length){
+      method = "PUT"
+      url = url + `/${editEmployee.id}`
+    }
+
     const body = JSON.stringify(data)
 
     fetch(url, {
@@ -44,9 +50,6 @@ const AddEmployee = ({ closeModal, editEmployee, setEditEmployee }) => {
     .finally(() => {
       setLoading(false)
     })
-
-
-    setLoading(true);
   };
 
   return (

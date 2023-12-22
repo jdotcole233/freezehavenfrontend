@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 const AddProduct = ({ closeModal, editProduct, setEditProduct }) => {
   const {
@@ -7,8 +9,44 @@ const AddProduct = ({ closeModal, editProduct, setEditProduct }) => {
     formState: { errors },
   } = useForm();
 
+  const [loading, setLoading] = useState(false);
+
   const submitProductForm = (data) => {
     console.log(data);
+    setLoading(true)
+
+    let url = "http://127.0.0.1:8000/api/products"
+    let method = "POST"
+    let body = JSON.stringify(data)
+
+    if (Object.keys(editProduct).length)
+    {
+      url = url + `/${editProduct.id}`
+      method = "PUT"
+    }
+
+
+    fetch(url, {
+      method, 
+      body, 
+      headers: {
+        'Content-type': 'Application/json'
+      }
+    })
+    .then((resp) => resp.json())
+    .then((response) => {
+      setLoading(false);
+      toast.success(response.message);
+      closeModal(false);
+    })
+    .catch((err) => {
+      setLoading(false);
+      closeModal(false);
+      toast.warn("Failed to add customers..");
+    })
+    .finally(() => {
+      setLoading(false);
+    });
   };
 
   return (
@@ -163,7 +201,13 @@ const AddProduct = ({ closeModal, editProduct, setEditProduct }) => {
               onClick={handleSubmit(submitProductForm)}
               className=" bg-orange-500 px-4 py-2 w-36 text-lg text-white rounded-md "
             >
-              {Object.keys(editProduct).length ? "Update" : "Add"}
+              {loading ? (
+                "loading..."
+              ) : (
+                <span>
+                  {Object.keys(editProduct).length ? "Update" : "Add"}
+                </span>
+              )}
             </button>
           </div>
         </div>

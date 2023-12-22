@@ -1,15 +1,45 @@
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 const AddProductDetails = ({ closeModal }) => {
   const {
     register,
+    watch,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+  const [profit, setProfit] = useState(0);
+  const [income, setIncome] = useState(0);
+  const [totalWeight, setTotalWeight] = useState(0);
+  const [totalCost, setTotalCost] = useState(0);
+
   const submitProductDetailsForm = (data) => {
-    console.log(data)
-  }
+    console.log(data);
+  };
+
+  useEffect(() => {
+    const subscription = watch((data) => {
+      // Total weight, Total cost, Income, profit
+      console.log(data);
+      if (data?.weight && data?.quantity && data?.cost_per_box) {
+        const total_weight = data?.weight * data?.quantity;
+        setTotalWeight(total_weight);
+        const total_cost = data?.quantity * data?.cost_per_box;
+        setTotalCost(total_cost);
+
+        console.log(total_cost, total_weight);
+
+        const income = total_weight * data?.unit_price;
+        setIncome(income);
+        const profit = income - total_cost;
+        setProfit(profit);
+      }
+      console.log(data);
+    });
+
+    // return () => subscription?.unsubscribe()
+  }, [watch]);
 
   return (
     <div className="fixed flex z-50 justify-center items-center py-4 top-0 left-0 bg-black/25 w-full h-full">
@@ -38,14 +68,12 @@ const AddProductDetails = ({ closeModal }) => {
           <div className="flex w-[850px items-center justify-between">
             <div className="flex flex-col  ">
               <label className="text-lg font-thin mb-2" htmlFor="weight">
-                Weight (kg)
+                Weight per box (kg)
               </label>
               <input
-                {
-                  ...register("weight",{
-                    required: "Weight is required"
-                  })
-                }
+                {...register("weight", {
+                  required: "Weight is required",
+                })}
                 className=" w-96 border border-gray-400 px-2 h-12 outline-none rounded-md"
                 type="number"
                 placeholder="e.g. 10kg"
@@ -59,11 +87,9 @@ const AddProductDetails = ({ closeModal }) => {
                 Quantity
               </label>
               <input
-              {
-                ...register("quantity", {
-                  required: "Quantity is required"
-                })
-              }
+                {...register("quantity", {
+                  required: "Quantity is required",
+                })}
                 className="w-96 border border-gray-400 px-2 h-12 outline-none rounded-md"
                 type="number"
                 placeholder="2"
@@ -73,23 +99,22 @@ const AddProductDetails = ({ closeModal }) => {
               </span>
             </div>
           </div>
-          <div className="flex w-[850px] items-center justify-between">
+
+          <div className="flex w-[850px items-center justify-between">
             <div className="flex flex-col  ">
-              <label className="text-lg font-thin mb-2" htmlFor="cost price">
-                Cost Price (&#8373;)
+              <label className="text-lg font-thin mb-2" htmlFor="Cost per box">
+                Cost per box (&#8373;)
               </label>
               <input
-              {
-                ...register("cost_price", {
-                  required: "Cost price is required"
-                })
-              }
-                className="w-48 border border-gray-400 px-2 h-12 outline-none rounded-md"
+                {...register("cost_per_box", {
+                  required: "Cost per box is required",
+                })}
+                className="w-96 border border-gray-400 px-2 h-12 outline-none rounded-md"
                 type="number"
-                placeholder="100.00"
+                placeholder="2"
               />
               <span className="text-red-500">
-                {errors?.cost_price && errors?.cost_price?.message}
+                {errors?.cost_per_box && errors?.cost_per_box?.message}
               </span>
             </div>
             <div className="flex flex-col  ">
@@ -97,12 +122,10 @@ const AddProductDetails = ({ closeModal }) => {
                 Unit Price (&#8373;)
               </label>
               <input
-              {
-                ...register("unit_price", {
-                  required: "Enter unit price"
-                })
-              }
-                className="w-48 border border-gray-400 px-2 h-12 outline-none rounded-md"
+                {...register("unit_price", {
+                  required: "Enter unit price",
+                })}
+                className="w-96 border border-gray-400 px-2 h-12 outline-none rounded-md"
                 type="number"
                 placeholder="20.00"
               />
@@ -110,14 +133,59 @@ const AddProductDetails = ({ closeModal }) => {
                 {errors?.unit_price && errors?.unit_price?.message}
               </span>
             </div>
+          </div>
+
+          <div className="flex w-[850px] items-center justify-between">
+            <div className="flex flex-col  ">
+              <label className="text-lg font-thin mb-2" htmlFor="cost price">
+                Total Cost Price (&#8373;)
+              </label>
+              <input
+                // {...register("total_cost_price", {
+                //   required: "Cost price is required",
+                // })}
+                className="bg-lime-700 text-white w-48 border border-gray-400 px-2 h-12 outline-none rounded-md"
+                type="number"
+                // placeholder="100.00"
+                // defaultValue={totalCost}
+                value={totalCost}
+                readOnly
+              />
+              {/* <span className="text-red-500">
+                {errors?.cost_price && errors?.cost_price?.message}
+              </span> */}
+            </div>
+
+            <div className="flex flex-col  ">
+              <label className="text-lg font-thin mb-2" htmlFor="weight">
+                Total Weight (kg)
+              </label>
+              <input
+                {...register("total_weight", {
+                  required: "Weight is required",
+                })}
+                className="bg-lime-700 text-white w-48 border border-gray-400 px-2 h-12 outline-none rounded-md"
+                type="number"
+                // placeholder="e.g. 10kg"
+                value={totalWeight}
+                readOnly
+              />
+              {/* <span className="text-red-500">
+                {errors?.weight && errors?.weight?.message}
+              </span> */}
+            </div>
+
             <div className="flex flex-col  ">
               <label className="text-lg font-thin mb-2" htmlFor="Total Income">
                 Total Income (&#8373;)
               </label>
               <input
+                {...register("income")}
+                defaultValue={income}
                 className="bg-lime-700 text-white w-48 border border-gray-400 px-2 h-12 outline-none rounded-md"
                 type="number"
-                placeholder="20.00"
+                // placeholder="20.00"
+                value={income}
               />
             </div>
             <div className="flex flex-col  ">
@@ -125,9 +193,12 @@ const AddProductDetails = ({ closeModal }) => {
                 Profit (&#8373;)
               </label>
               <input
-                className="w-48 text-white border border-gray-400 px-2 h-12 outline-none rounded-md bg-lime-700  "
+                defaultValue={profit}
+                {...register("profit")}
+                className={`w-48 text-white border border-gray-400 px-2 h-12 outline-none rounded-md ${ profit < 0 ? 'bg-red-700' : 'bg-lime-700' } `}
                 type="number"
-                placeholder="20.00"
+                // placeholder="20.00"
+                value={profit}
               />
             </div>
           </div>
@@ -136,7 +207,10 @@ const AddProductDetails = ({ closeModal }) => {
             <button className="bg-slate-500 rounded-md w-36 px-4 py-2 text-lg text-white">
               Cancel
             </button>
-            <button onClick={handleSubmit(submitProductDetailsForm)} className="bg-orange-500 rounded-md text-lg text-white px-4 py-2 w-36">
+            <button
+              onClick={handleSubmit(submitProductDetailsForm)}
+              className="bg-orange-500 rounded-md text-lg text-white px-4 py-2 w-36"
+            >
               Add
             </button>
           </div>

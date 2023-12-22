@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 const AddCustomer = ({ closeModal, rowData, setRowData }) => {
   const {
@@ -7,8 +9,42 @@ const AddCustomer = ({ closeModal, rowData, setRowData }) => {
     formState: { errors },
   } = useForm();
 
+  const [loading, setLoading] = useState(false);
+
   const submitCustomerForm = (data) => {
     console.log(data);
+    let url = "http://127.0.0.1:8000/api/customers";
+    let method = "POST";
+    let body = JSON.stringify(data);
+
+    if (Object.keys(rowData).length) {
+      url = url + `/${rowData.id}`;
+      method = "PUT";
+    }
+
+    setLoading(true);
+
+    fetch(url, {
+      method,
+      body,
+      headers: {
+        "Content-type": "Application/json",
+      },
+    })
+      .then((resp) => resp.json())
+      .then((response) => {
+        setLoading(false);
+        toast.success(response.message);
+        closeModal(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        closeModal(false);
+        toast.warn("Failed to add customers..");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -38,14 +74,14 @@ const AddCustomer = ({ closeModal, rowData, setRowData }) => {
           </svg>
         </div>
 
-        <form className="flex flex-col gap-3 px-4" action="">
+        <div className="flex flex-col gap-3 px-4">
           <div className="w-full ">
             <label className="text-lg font-thin mb-2" htmlFor="Customer Name">
               Customer Name
             </label>
             <input
-              defaultValue={rowData?.customer_name || ""}
-              {...register("customer_name")}
+              defaultValue={rowData?.name || ""}
+              {...register("name")}
               className="border px-2  outline-none h-12 rounded-md w-full"
               type="text"
               placeholder="E.g. James Griffin"
@@ -77,7 +113,7 @@ const AddCustomer = ({ closeModal, rowData, setRowData }) => {
               <input
                 defaultValue={rowData?.location}
                 {...register("location", {
-                  required: "Customer location is required"
+                  required: "Customer location is required",
                 })}
                 className="border px-2  outline-none h-12 rounded-md w-full"
                 type="text"
@@ -97,10 +133,14 @@ const AddCustomer = ({ closeModal, rowData, setRowData }) => {
               onClick={handleSubmit(submitCustomerForm)}
               className=" bg-orange-500 px-4 py-2 w-36 text-lg text-white rounded-md "
             >
-              {Object.keys(rowData).length ? "Update" : "Add"}
+              {loading ? (
+                "loading..."
+              ) : (
+                <span>{Object.keys(rowData).length ? "Update" : "Add"}</span>
+              )}
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
