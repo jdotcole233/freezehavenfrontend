@@ -1,11 +1,61 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import SaleCard from "../UtilityComponent/SaleCard";
 import SAUSAGE from "../../assets/Sadia_sausage.png";
 import Context from "../../context/context";
+import { toast } from "react-toastify";
+import { AddCustomer } from "../Customers";
 
 const Sales = () => {
   const { cart, showBag, setShowBag, addToCart } = useContext(Context);
+
+  const [products, setProducts] = useState([]);
+  const [addCustomerModal, setAddCustomerModal] = useState(false);
+  const [customers, setCustomers] = useState([]);
+
+  const fetchProduct = () => {
+    const url = `http://127.0.0.1:8000/api/sales`;
+    const method = "GET";
+
+    fetch(url, {
+      method,
+    })
+      .then((res) => res.json())
+      .then((response) => {
+        setProducts(response);
+      })
+      .catch((err) => {
+        toast.error("Failed to fetch products");
+      });
+  };
+
+  const fetchCustomer = () => {
+    let url = "http://127.0.0.1:8000/api/customers";
+
+    fetch(url)
+      .then((resp) => resp.json())
+      .then((response) => {
+        setCustomers(response);
+      })
+      .catch((err) => {
+        toast.warn("Failed to load customers");
+      });
+  };
+
+  const removeItemFromBag = (position) => {
+    let tempBag = cart;
+    tempBag.splice(position, 1);
+    addToCart([...tempBag]);
+  };
+
+  useEffect(() => {
+    fetchProduct();
+    fetchCustomer();
+  }, []);
+
+  useEffect(() => {
+    fetchCustomer();
+  }, [addCustomerModal]);
 
   return (
     <div className="p-4 flex">
@@ -38,14 +88,18 @@ const Sales = () => {
           </Link>
         </div>
 
-        <div className="mt-4 grid grid-cols-5 gap-2">
-          {[1, 2, 3, 4, 1, 1, 1, 1, 1, 1].map((product, key) => (
-            <SaleCard key={key} />
+        <div
+          className={`mt-4 grid ${
+            showBag ? "grid-cols-3" : " grid-cols-5"
+          } gap-2`}
+        >
+          {products?.map((product, key) => (
+            <SaleCard key={key} product={product} />
           ))}
         </div>
       </div>
       {showBag && (
-        <div className="bg-white overflow-y-scroll w-1/4 p-2">
+        <div className="bg-white overflow-y-scroll w-2/4 p-2">
           <div className="flex justify-between">
             <div>
               <h1 className="font-semibold text-xl">Order list</h1>
@@ -67,7 +121,10 @@ const Sales = () => {
               />
             </svg>
           </div>
-          <button className="border-2 flex justify-center mt-4 mb-2 hover:bg-green-500 hover:text-white border-green-500 rounded-md w-full py-2">
+          <button
+            onClick={() => setAddCustomerModal(true)}
+            className="border-2 flex justify-center mt-4 mb-2 hover:bg-green-500 hover:text-white border-green-500 rounded-md w-full py-2"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -87,9 +144,11 @@ const Sales = () => {
 
           <select className="border px-2  outline-none h-12 rounded-md w-full">
             <option value="Walk-in">Walk-in</option>
-            <option className=" shadow-none" value="Ebenezer">
-              Ebenezer
-            </option>
+            {customers.map((customer, key) => (
+              <option key={key} className=" shadow-none" value={customer?.id}>
+                {customer?.name} - {customer?.phone_number}
+              </option>
+            ))}
           </select>
 
           <div className=" mt-8 h-80  overflow-y-scroll">
@@ -106,24 +165,33 @@ const Sales = () => {
             </div>
 
             {cart?.map((bag, key) => (
-              <BagCardView key={key} />
+              <BagCardView
+                key={key}
+                product={bag}
+                removeItemFromBag={removeItemFromBag}
+                position={key}
+              />
             ))}
           </div>
 
           <div className="mt-4">
             <table className="w-full">
-              <tr>
-                <td className="font-semibold">Sub total</td>
-                <td>9000</td>
-              </tr>
-              <tr>
-                <td className="font-semibold">Tax</td>
-                <td>90</td>
-              </tr>
-              <tr>
-                <td className=" font-semibold text-xl text-blue-400">Total</td>
-                <td>9090</td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td className="font-semibold">Sub total</td>
+                  <td>9000</td>
+                </tr>
+                <tr>
+                  <td className="font-semibold">Tax</td>
+                  <td>90</td>
+                </tr>
+                <tr>
+                  <td className=" font-semibold text-xl text-blue-400">
+                    Total
+                  </td>
+                  <td>9090</td>
+                </tr>
+              </tbody>
             </table>
             <div>
               <input
@@ -181,11 +249,40 @@ const Sales = () => {
           </div>
         </div>
       )}
+
+      {addCustomerModal && (
+        <AddCustomer
+          closeModal={setAddCustomerModal}
+          rowData={{}}
+          setRowData={() => {}}
+        />
+      )}
     </div>
   );
 };
 
-const BagCardView = () => {
+const BagCardView = ({ product, removeItemFromBag, position }) => {
+  const [unitPrice, setUnitPrice] = useState(
+    Number(product?.latest.unit_price) || 0
+  );
+  const [itemCount, setItemCount] = useState(1);
+
+  const increaseItems = () => {
+    setItemCount((prev) => prev + 1);
+    setUnitPrice((prev) => prev + Number(product?.latest.unit_price));
+  };
+
+  const decreaseItems = () => {
+    if (itemCount == 1) return;
+
+    setItemCount((prev) => prev - 1);
+    setUnitPrice((prev) =>
+      prev >= Number(product?.latest.unit_price)
+        ? prev - Number(product?.latest.unit_price)
+        : Number(product?.latest.unit_price)
+    );
+  };
+
   return (
     <div className="shadow-md mb-3 overflow-hidden flex  rounded-md">
       <div
@@ -198,14 +295,17 @@ const BagCardView = () => {
         }}
         className=" w-28"
       ></div>
-      <div className="flex items-center p-1 gap-2">
-        <div>
-          <p className="text-sm font-semibold">Product Name</p>
+      <div className="flex flex-1 px-2 items-center justify-between p-1 gap-2">
+        <div className="ml-2">
+          <p className="text-sm font-semibold">{product?.product_name}</p>
           <span className="text-xs bg-orange-500 rounded-full px-1 text-white">
-            category
+            {product?.product_category}
           </span>
           <div className="flex items-center gap-2 py-1">
-            <button className="border rounded-md">
+            <button
+              onClick={() => decreaseItems()}
+              className="border rounded-md"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -221,8 +321,11 @@ const BagCardView = () => {
                 />
               </svg>
             </button>
-            <span className="text-xs">2</span>
-            <button className="border rounded-md">
+            <span className="text-xs">{itemCount}</span>
+            <button
+              onClick={() => increaseItems()}
+              className="border rounded-md"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -240,14 +343,15 @@ const BagCardView = () => {
             </button>
           </div>
         </div>
-        <p className="text-sm">3000</p>
+        <p className="text-sm font-semibold">&#8373; {unitPrice}</p>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="#f00"
-          className="w-5 h-5"
+          className="w-5 h-5 cursor-pointer"
+          onClick={() => removeItemFromBag(position)}
         >
           <path
             strokeLinecap="round"

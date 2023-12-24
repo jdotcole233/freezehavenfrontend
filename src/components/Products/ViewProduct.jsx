@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import SAUSAGE from "../../assets/Sadia_sausage.png";
-import { mockProductDetails } from "../../assets/data";
+import { stock } from "../../assets/data";
 import { DataTable } from "../UtilityComponent";
 import AddProductDetails from "./AddProductDetails";
 import { useEffect, useState } from "react";
@@ -13,22 +13,21 @@ const columnNames = [
   "Unit Price",
   "Total Income",
   "Profit",
-  "Created By",
+  "Date created",
+  "Created By"
 ];
 
-const stock = {
-  OUT_OF_STOCK: "Out of stock",
-  IN_STOCK: "In-stock",
-}
+
 
 const ViewProduct = () => {
   const [addProductDetailsModal, setProductDetailsModal] = useState(false);
-  const [addProductDetails, setAddProductDetails] = useState([]);
+  const [productDetails, setProductDetails] = useState([]);
   const [product, setProduct] = useState({});
+  const [editProduct, setEditProduct] = useState({});
   const { id } = useParams();
 
   const editRow = (row) => {
-    setProduct(row);
+    setEditProduct(row);
     setProductDetailsModal(true);
   };
 
@@ -42,22 +41,31 @@ const ViewProduct = () => {
       .then((res) => res.json())
       .then((response) => {
         setProduct(response);
-        setAddProductDetails(response?.product);
+        setProductDetails(response?.product_details);
       })
       .catch((err) => {
         toast.error("Failed to fetch products");
       });
   };
 
-   console.log(product)
   useEffect(() => {
     fetchProduct();
-  }, []);
+  }, [addProductDetailsModal]);
 
   return (
     <div className="p-4">
-      <div className="flex justify-between">
-        <div className="border border-slate-400 shadow-md w-80 h-64 rounded-md p-2">
+      <div className="flex gap-4">
+      <div className=" shadow-md w-80 h-64 rounded-md overflow-hidden">
+          <div
+            style={{
+              backgroundImage: `url(${SAUSAGE})`,
+              backgroundPosition: "center",
+              backgroundSize: "100%",
+            }}
+            className=" h-52"
+          ></div>
+        </div>
+        <div className="border border-slate-400 shadow-md flex-1 h-64 rounded-sm p-2">
           <h1 className="font-bold text-lg">Product Summary</h1>
           <table className="w-full">
             <tbody>
@@ -92,17 +100,16 @@ const ViewProduct = () => {
             </tbody>
           </table>
         </div>
-        <div className="border border-slate-400 shadow-md w-80 h-64 rounded-md overflow-hidden">
-          <div
-            style={{
-              backgroundImage: `url(${SAUSAGE})`,
-              backgroundPosition: "center",
-              backgroundSize: "100%",
-            }}
-            className=" h-52"
-          ></div>
-          <div className="px-2 flex py-2 justify-center">
-            <button
+        
+      </div>
+
+      <div className="pt-6">
+        <div className="flex justify-between items-center">
+          <div>
+          <h1 className="text-lg font-semibold">Product Details List</h1>
+          <p>Manage product details</p>
+          </div>
+          <button
               onClick={() => {
                 setProductDetailsModal(true);
               }}
@@ -110,26 +117,18 @@ const ViewProduct = () => {
             >
               Add Product Details
             </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="pt-6">
-        <div>
-          <h1 className="text-lg font-semibold">Product Details List</h1>
-          <p>Manage product details</p>
         </div>
 
         <DataTable
           columnNames={columnNames}
-          rows={addProductDetails}
+          rows={productDetails}
           editRow={editRow}
         />
         {addProductDetailsModal && (
           <AddProductDetails
             closeModal={setProductDetailsModal}
             product_id={id}
-            products={product}
+            product={editProduct}
           />
         )}
       </div>

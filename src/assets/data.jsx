@@ -490,6 +490,11 @@ const mockExpenses = [
 ];
 
 
+const stock = {
+  OUT_OF_STOCK: "Out of stock",
+  IN_STOCK: "In-stock",
+}
+
 
 export {
   navigationItems,
@@ -499,5 +504,6 @@ export {
   mockTransactions,
   mockProductDetails,
   mockEmployeeDetails,
-  mockExpenses
+  mockExpenses,
+  stock
 };

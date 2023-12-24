@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
-const AddProductDetails = ({ closeModal }) => {
+const AddProductDetails = ({ closeModal, product, product_id }) => {
   const {
     register,
     watch,
@@ -9,13 +10,61 @@ const AddProductDetails = ({ closeModal }) => {
     formState: { errors },
   } = useForm();
 
-  const [profit, setProfit] = useState(0);
-  const [income, setIncome] = useState(0);
-  const [totalWeight, setTotalWeight] = useState(0);
-  const [totalCost, setTotalCost] = useState(0);
+  console.table(product?.id);
+  const [profit, setProfit] = useState(product?.profit_or_loss || 0);
+  const [income, setIncome] = useState(product?.total_income || 0);
+  const [totalWeight, setTotalWeight] = useState(product?.weight || 0);
+  const [totalCost, setTotalCost] = useState(product?.cost_price || 0);
+  const [loading, setLoading] = useState(false);
+
+  const calculate_cost_price = () => totalCost / product?.quantity || 0;
+  const calculate_weight_per_box = () => totalWeight / product?.quantity || 0;
 
   const submitProductDetailsForm = (data) => {
-    console.log(data);
+    let url = "http://127.0.0.1:8000/api/product_details";
+    let method = "POST";
+
+    data["profit_or_loss"] = profit;
+    data["total_income"] = income;
+    data["cost_price"] = totalCost;
+    data["weight"] = totalWeight;
+    data["product_id"] = product_id;
+
+    delete data["profit"];
+    delete data["income"];
+    delete data["cost_per_box"];
+    delete data["total_weight"];
+
+    // console.log(data);
+
+    if (Object.keys(product).length) {
+      url = url + `/${product.id}`;
+      method = "PUT";
+    }
+
+    let body = JSON.stringify(data);
+
+    setLoading(true);
+    fetch(url, {
+      method,
+      body,
+      headers: {
+        "Content-type": "Application/json",
+      },
+    })
+      .then((resp) => resp.json())
+      .then((response) => {
+        setLoading(false);
+        toast.success(response.message);
+        closeModal(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        toast.warn("Failed to add product details...");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -27,18 +76,14 @@ const AddProductDetails = ({ closeModal }) => {
         setTotalWeight(total_weight);
         const total_cost = data?.quantity * data?.cost_per_box;
         setTotalCost(total_cost);
-
-        console.log(total_cost, total_weight);
-
         const income = total_weight * data?.unit_price;
         setIncome(income);
         const profit = income - total_cost;
         setProfit(profit);
       }
-      console.log(data);
     });
 
-    // return () => subscription?.unsubscribe()
+    return () => subscription.unsubscribe();
   }, [watch]);
 
   return (
@@ -77,6 +122,7 @@ const AddProductDetails = ({ closeModal }) => {
                 className=" w-96 border border-gray-400 px-2 h-12 outline-none rounded-md"
                 type="number"
                 placeholder="e.g. 10kg"
+                defaultValue={calculate_weight_per_box() || 0}
               />
               <span className="text-red-500">
                 {errors?.weight && errors?.weight?.message}
@@ -93,6 +139,7 @@ const AddProductDetails = ({ closeModal }) => {
                 className="w-96 border border-gray-400 px-2 h-12 outline-none rounded-md"
                 type="number"
                 placeholder="2"
+                defaultValue={product?.quantity || "0"}
               />
               <span className="text-red-500">
                 {errors?.quantity && errors?.quantity?.message}
@@ -112,6 +159,7 @@ const AddProductDetails = ({ closeModal }) => {
                 className="w-96 border border-gray-400 px-2 h-12 outline-none rounded-md"
                 type="number"
                 placeholder="2"
+                defaultValue={calculate_cost_price() || 0}
               />
               <span className="text-red-500">
                 {errors?.cost_per_box && errors?.cost_per_box?.message}
@@ -128,6 +176,7 @@ const AddProductDetails = ({ closeModal }) => {
                 className="w-96 border border-gray-400 px-2 h-12 outline-none rounded-md"
                 type="number"
                 placeholder="20.00"
+                defaultValue={product?.unit_price}
               />
               <span className="text-red-500">
                 {errors?.unit_price && errors?.unit_price?.message}
@@ -181,11 +230,11 @@ const AddProductDetails = ({ closeModal }) => {
               </label>
               <input
                 {...register("income")}
-                defaultValue={income}
                 className="bg-lime-700 text-white w-48 border border-gray-400 px-2 h-12 outline-none rounded-md"
                 type="number"
                 // placeholder="20.00"
                 value={income}
+                defaultValue={income}
               />
             </div>
             <div className="flex flex-col  ">
@@ -193,12 +242,14 @@ const AddProductDetails = ({ closeModal }) => {
                 Profit (&#8373;)
               </label>
               <input
-                defaultValue={profit}
                 {...register("profit")}
-                className={`w-48 text-white border border-gray-400 px-2 h-12 outline-none rounded-md ${ profit < 0 ? 'bg-red-700' : 'bg-lime-700' } `}
+                className={`w-48 text-white border border-gray-400 px-2 h-12 outline-none rounded-md ${
+                  profit < 0 ? "bg-red-700" : "bg-lime-700"
+                } `}
                 type="number"
                 // placeholder="20.00"
                 value={profit}
+                defaultValue={profit}
               />
             </div>
           </div>
@@ -211,7 +262,11 @@ const AddProductDetails = ({ closeModal }) => {
               onClick={handleSubmit(submitProductDetailsForm)}
               className="bg-orange-500 rounded-md text-lg text-white px-4 py-2 w-36"
             >
-              Add
+              {loading ? (
+                "loading..."
+              ) : (
+                <span>{Object.keys(product).length ? "Edit" : "Add"}</span>
+              )}
             </button>
           </div>
         </div>
